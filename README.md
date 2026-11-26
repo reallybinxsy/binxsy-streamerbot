@@ -1,25 +1,32 @@
 # Binxsy for Streamer.bot
 
-Send Twitch clips to Discord, customize go-live announcements, and update the settings editors for your Binxsy widgets. These downloads update existing Streamer.bot setups on Windows with .NET Framework 4.8.1.
+Choose the Twitch tools you want to use. Each `.sb` file imports one tool into Streamer.bot on Windows. All four use the same [Binxsy.dll](https://github.com/reallybinxsy/binxsy-streamerbot/releases/latest/download/Binxsy.dll).
 
-## Choose a download
-
-| Download | Choose it if you already use… | What you get |
+| Tool | What it does | Download |
 | --- | --- | --- |
-| [Clip to Discord ZIP](https://github.com/reallybinxsy/binxsy-streamerbot/releases/latest/download/Clip-to-Discord.zip) | The Clip to Discord action group | Customize `!clip` chat replies and retry failed Discord deliveries at the end of a stream. |
-| [Stream Announce Discord ZIP](https://github.com/reallybinxsy/binxsy-streamerbot/releases/latest/download/Stream-Announce-Discord.zip) | The Stream Announce Discord Webhook action group | Preview your go-live post, choose its mentions and accent color, and update the announcement as your stream changes. |
-| [Binxsy.dll](https://github.com/reallybinxsy/binxsy-streamerbot/releases/latest/download/Binxsy.dll) | Any Binxsy widget that needs a shared library update | The settings editors used by Dynamic Stream Island, Minim Raid Out, Cider, Clip to Discord, and Stream Announce. |
+| Clip to Discord | Viewers type `!clip` to create a Twitch clip and post it in your Discord channel. | [Clip-to-Discord.sb](https://github.com/reallybinxsy/binxsy-streamerbot/releases/latest/download/Clip-to-Discord.sb) |
+| Stream Announce Discord | Posts when you go live, updates the post when your stream changes, and removes it when you go offline. | [Stream-Announce-Discord.sb](https://github.com/reallybinxsy/binxsy-streamerbot/releases/latest/download/Stream-Announce-Discord.sb) |
+| Cider | Lets viewers request songs, check the current track, and vote to skip in Cider. Download both files. | [Cider.sb](https://github.com/reallybinxsy/binxsy-streamerbot/releases/latest/download/Cider.sb) · [cider-listener.html](https://github.com/reallybinxsy/binxsy-streamerbot/releases/latest/download/cider-listener.html) |
+| Dynamic Stream Island 3.0 | Adds a current-track display, audio waveform, and Twitch alerts to an OBS scene. | [DSI-3.0.sb](https://github.com/reallybinxsy/binxsy-streamerbot/releases/latest/download/DSI-3.0.sb) |
 
-Each ZIP includes the matching DLL, its installer, and a text guide. Download the ZIP for the action group you want to update.
+## Import a tool
 
-## Install an update
+1. Use Streamer.bot 1.0.7 on Windows with .NET Framework 4.8.1. If you have an existing setup, back up your Streamer.bot data and current DLL before replacing anything. [Streamer.bot backup guide](https://docs.streamer.bot/guide/core/backup)
+2. Close Streamer.bot. Download `Binxsy.dll` and place it in the `dlls` folder beside `Streamer.bot.exe`. Create that folder if needed. One copy serves every import from the same release.
+3. Reopen Streamer.bot, click **Import** on the top toolbar, and drag your `.sb` file onto **Import String**. Review the included items and any existing entries marked for overwrite, then click **Import**. Repeat for each tool you want. [Streamer.bot import guide](https://docs.streamer.bot/guide/core/import-export)
+4. Connect your Twitch broadcaster account. In **Actions & Queues**, select your tool’s **Settings** action. Right-click its **Test** trigger and choose **Test Trigger** to open the editor. [Twitch account setup](https://docs.streamer.bot/guide/platforms/twitch#accounts)
+5. For a tool with chat commands, open **Commands** after import. Fresh imports can leave commands disabled. Review who can use each command, then enable the ones you want. For Clip to Discord, enable **!clip** before testing it in chat.
 
-1. Close Streamer.bot and extract the ZIP to its own folder.
-2. Open the `Install-…txt` guide inside. Follow its PowerShell command using the folder that contains your `Streamer.bot.exe`.
-3. Keep the backup folder the installer prints. Reopen Streamer.bot and run the updated group's **Settings** action.
+## First use
 
-For a DLL-only update, close Streamer.bot, back up its existing `dlls\Binxsy.dll`, and replace it with the downloaded file. Reopen Streamer.bot and run a widget's Settings action to see the installed version.
+**Clip to Discord.** Choose a Discord channel for clips, create a webhook for that channel, and paste the URL into **Delivery**. Save your settings. While live, try `!clip 15 Last lap` in Twitch chat and check for the clip in Discord. [Create a Discord webhook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
 
-[Release notes and earlier versions](https://github.com/reallybinxsy/binxsy-streamerbot/releases)
+**Stream Announce Discord.** Paste your announcement channel’s webhook into **Delivery**, then customize the **Go-live post**. **Send test** posts your draft to that channel with mentions muted. Save the design to use it for your next stream. The original Stream Announce actions are by rondhi and identify their license as GPLv3. [rondhi’s extensions](https://rondhi.com/) · [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-The original Stream Announce Discord Webhook actions were created by [rondhi](https://twitch.tv/rondhi). The original script identifies its license as [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
+**Cider.** Enable Cider’s playback API, then enter its URL and your app token under **Connections**. Select **Check primary connection**. Start Streamer.bot’s WebSocket server on `127.0.0.1:8080` and keep `cider-listener.html` open on the same PC while streaming. Play a track and confirm its title in the listener. [Cider install guide](https://github.com/reallybinxsy/binxsy-streamerbot/releases/latest/download/Cider-Install.txt) · [Cider playback API](https://taproom.cider.sh/docs/api/)
+
+**Dynamic Stream Island 3.0.** Run OBS and Streamer.bot on the same PC. Install the OBS plugins listed in the guide and start SMTC Bridge for track information. In **[DSI] Settings**, choose your OBS collection and music audio source, then select **OBS setup → Install scene & sources**. Add **[DSI] Widget** as an existing scene source in your streaming scene. [DSI install guide and plugin downloads](https://github.com/reallybinxsy/binxsy-streamerbot/releases/latest/download/DSI-3.0-Install.txt) · [SMTC Bridge](https://github.com/nuttylmao/smtc-bridge)
+
+**Using Cider and DSI together.** The **DSI Song** command triggers both tools’ current-song actions. Enable the command in **Commands**, then choose one reply. In **Actions & Queues**, disable its command trigger on either **[CIDER & SB] 8 - Current Song** or **[DSI] Song Information**. The other action will answer `!song` and its aliases.
+
+For a previous version, download its DLL and imports from the same release. [Release history](https://github.com/reallybinxsy/binxsy-streamerbot/releases)
